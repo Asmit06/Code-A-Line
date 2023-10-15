@@ -1,50 +1,19 @@
 import React, { useState } from 'react'
 import "./Home.css"
 // import { useNavigate } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faCloudUploadAlt } from '@fortawesome/free-solid-svg-icons';
 
-import { useDropzone } from 'react-dropzone';
-//import htmlToDocx from 'html-to-docx';
-// import saveAs from 'file-saver';
+// Add the icons you want to use to the library
+library.add(faCloudUploadAlt);
+
+//import { useDropzone } from 'react-dropzone';
+
 
 
 const Home = () => {
 
-
-  //const [uploadedHTML, setUploadedHTML] = useState(null);
-
-  // const onFileUpload = async (event) => {
-  //   const formData = new FormData();
-  //   formData.append('file', event.target.files[0]);
-
-  //   try {
-  //     const response = await fetch('http://localhost:5000/upload', {
-  //       method: 'POST',
-  //       body: formData,
-  //     });
-
-  //     if (response.ok) {
-  //       const blob = await response.blob();
-  //       const url = window.URL.createObjectURL(blob);
-  //       const a = document.createElement('a');
-  //       a.href = url;
-  //       a.download = 'converted.docx';
-  //       a.click();
-  //       window.URL.revokeObjectURL(url);
-  //     } else {
-  //       console.error('File upload failed');
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
-  // return (
-  //   <div className="Home">
-  //     <header className="Home-header">
-  //       <h1>HTML+CSS File Upload</h1>
-  //       <input type="file" accept=".html, .css" onChange={onFileUpload} />
-  //     </header>
-  //   </div>
   const [file, setFile] = useState(null);
 
   const handleFileChange = (event) => {
@@ -77,10 +46,27 @@ const Home = () => {
   };
 
   return (
-    <div>
-      <input type="file" accept=".html, .css" onChange={handleFileChange} />
-      <button onClick={handleUpload}>Upload File</button>
-    </div>
+    <div className="container">
+      <h1>HTML to Word Converter</h1>
+  <label htmlFor="file-upload" className="file-label">
+    <input
+      type="file"
+      id="file-upload"
+      accept=".html, .css"
+      onChange={handleFileChange}
+      className="file-input"
+    />
+    <span className="file-cta">
+      <span className="file-icon">
+        <i className="fas fa-cloud-upload-alt"></i>
+      </span>
+      {/* <span className="file-label-text">Choose a file…</span> */}
+    </span>
+  </label>
+  <button onClick={handleUpload} className="upload-button">
+    Upload File
+  </button>
+</div>
   );
 }
 
