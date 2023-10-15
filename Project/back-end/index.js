@@ -32,7 +32,11 @@ app.post('/upload', upload.single('file'), async (req, res) => {
     if (!req.file) {
       return res.status(400).json({ error: 'No file uploaded.' });
     }
+
     const inputFile = req.file.path;
+    console.log(inputFile)
+    const inputFileName = req.file.name;
+    console.log(req.file);
 
     const pythonProcess = spawn('python', ['your_script.py', inputFile]);
 
