@@ -6,7 +6,7 @@ const Nav=()=>{
     const navigate = useNavigate();
     const logout= ()=>{
         localStorage.clear();
-        navigate('/signup')
+        navigate('/signup');
     }
     return( 
         <div>

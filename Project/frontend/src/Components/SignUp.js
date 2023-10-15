@@ -36,7 +36,7 @@ const SignUp = () => {
             console.log(result);
             localStorage.setItem("user", JSON.stringify(result.result));
             localStorage.setItem("token", JSON.stringify(result.auth));
-            navigate('/add');
+            navigate('/Home');
         }
         else{
             alert("Email id is already registered please try another id");
