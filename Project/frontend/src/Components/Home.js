@@ -2,41 +2,86 @@ import React, { useState } from 'react'
 import "./Home.css"
 // import { useNavigate } from 'react-router-dom'
 
-//import { useDropzone } from 'react-dropzone';
+import { useDropzone } from 'react-dropzone';
 //import htmlToDocx from 'html-to-docx';
 // import saveAs from 'file-saver';
 
 
 const Home = () => {
-  const [htmlInput, setHtmlInput] = useState('');
-  const [wordOutput, setWordOutput] = useState('');
-  const convertToWord = () => {
-    const convertedWord = 'Converted Word Document Content';
-    setWordOutput(convertedWord);
+
+
+  //const [uploadedHTML, setUploadedHTML] = useState(null);
+
+  // const onFileUpload = async (event) => {
+  //   const formData = new FormData();
+  //   formData.append('file', event.target.files[0]);
+
+  //   try {
+  //     const response = await fetch('http://localhost:5000/upload', {
+  //       method: 'POST',
+  //       body: formData,
+  //     });
+
+  //     if (response.ok) {
+  //       const blob = await response.blob();
+  //       const url = window.URL.createObjectURL(blob);
+  //       const a = document.createElement('a');
+  //       a.href = url;
+  //       a.download = 'converted.docx';
+  //       a.click();
+  //       window.URL.revokeObjectURL(url);
+  //     } else {
+  //       console.error('File upload failed');
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
+  // return (
+  //   <div className="Home">
+  //     <header className="Home-header">
+  //       <h1>HTML+CSS File Upload</h1>
+  //       <input type="file" accept=".html, .css" onChange={onFileUpload} />
+  //     </header>
+  //   </div>
+  const [file, setFile] = useState(null);
+
+  const handleFileChange = (event) => {
+    const selectedFile = event.target.files[0];
+    setFile(selectedFile);
+  };
+
+  const handleUpload = async () => {
+    if (file) {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      try {
+        const response = await fetch('http://localhost:5000/upload', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (response.ok) {
+          // Handle success
+          console.log('File uploaded successfully.');
+        } else {
+          // Handle errors
+          console.error('File upload failed. Server responded with status:', response.status);
+        }
+      } catch (error) {
+        console.error('File upload failed. Network error:', error);
+      }
+    }
   };
 
   return (
-    <>
-    <div className="container">
-      <h1>HTML to Word Converter</h1>
-      <div className="converter">
-        <div className="input-section">
-          <h2>HTML Input</h2>
-          <textarea
-            value={htmlInput}
-            onChange={(e) => setHtmlInput(e.target.value)}
-            placeholder="Paste your HTML here..."
-          />
-          <button onClick={convertToWord}>Convert to Word</button>
-        </div>
-        <div className="output-section">
-          <h2>Word Output</h2>
-          <div className="word-output">{wordOutput}</div>
-        </div>
-      </div>
+    <div>
+      <input type="file" accept=".html, .css" onChange={handleFileChange} />
+      <button onClick={handleUpload}>Upload File</button>
     </div>
-    </>
-  )
+  );
 }
 
 export default Home

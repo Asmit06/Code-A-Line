@@ -1,12 +1,59 @@
 const express = require("express");
+const multer = require('multer');
+const mammoth = require('mammoth');
+const fs = require('fs');
 const cors = require('cors');
 require('./db/config')
 const User = require('./db/User');
 const app = express();
 const Jwt = require('jsonwebtoken');
 const jwtKey = 'Code-A-Line';
+const path = require('path');
+const htmlToDocx = require('html-docx-js');
+const { spawn } = require('child_process');
+//const upload = multer({ dest: 'uploads/' });
+
+
 app.use(cors());
 app.use(express.json());
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'uploads/');
+    },
+    filename: function (req, file, cb) {
+      cb(null, file.originalname);
+    },
+  });
+  
+  const upload = multer({ storage });
+
+app.post('/upload', upload.single('file'), async (req, res) => {
+    if (!req.file) {
+      return res.status(400).json({ error: 'No file uploaded.' });
+    }
+    const inputFile = req.file.path;
+
+    const pythonProcess = spawn('python', ['your_script.py', inputFile]);
+
+    pythonProcess.stdout.on('data', (data) => {
+         console.log(`Python script output: ${data}`);
+     });
+
+    pythonProcess.stderr.on('data', (data) => {
+         console.error(`Python script error: ${data}`);
+    });
+
+    pythonProcess.on('close', (code) => {
+         if (code === 0) {
+             console.log('Python script executed successfully.');
+         } else {
+           console.error(`Python script failed with code ${code}.`);
+        }
+   });
+    
+});
+
 app.post('/register', async (req, res) => {
     let user = new User(req.body);
     let result = await user.save();
@@ -68,3 +115,13 @@ function verifyToken(req, res, next) {
 }
 app.listen(5000);
 
+    // var htmlContent = document.documentElement.outerHTML;
+    // console.log(htmlContent);
+    // var blob = new Blob([htmlContent], { type: 'application/msword' });
+    //         var a = document.createElement('a');
+    //         a.href = URL.createObjectURL(blob);
+    //         a.download = 'converted.doc';
+    //         a.style.display = 'none';
+    //         document.body.appendChild(a);
+    //         a.click();
+    //         document.body.removeChild(a);
