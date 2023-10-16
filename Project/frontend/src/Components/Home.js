@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import "./Home.css"
 // import { useNavigate } from 'react-router-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faCloudUploadAlt } from '@fortawesome/free-solid-svg-icons';
 
@@ -15,6 +15,7 @@ library.add(faCloudUploadAlt);
 const Home = () => {
 
   const [file, setFile] = useState(null);
+  const [upload,setUpload]= useState("Upload");
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
@@ -22,6 +23,13 @@ const Home = () => {
   };
 
   const handleUpload = async () => {
+    if(upload==='Upload')
+    {
+      setUpload('Downloading');
+    }
+    else{
+      setUpload('Upload');
+    }
     if (file) {
       const formData = new FormData();
       formData.append('file', file);
@@ -48,7 +56,7 @@ const Home = () => {
   return (
     <div className="container">
       <h1>HTML to Word Converter</h1>
-  <label htmlFor="file-upload" className="file-label">
+  {/* <label htmlFor="file-upload" className="file-label">
     <input
       type="file"
       id="file-upload"
@@ -60,11 +68,25 @@ const Home = () => {
       <span className="file-icon">
         <i className="fas fa-cloud-upload-alt"></i>
       </span>
-      {/* <span className="file-label-text">Choose a file…</span> */}
     </span>
-  </label>
+  </label> */}
+  {
+      file?
+    <label for="inputTag">
+        <i class='fa fa-file-download fa-3x '> </i>
+        <input id="inputTag" type="file" onChange={handleFileChange}/>
+        <br/>
+        <span id="imageName"></span>
+      </label>:
+      <label for="inputTag">
+      <i class='fa fa-camera fa-3x'></i>
+      <input id="inputTag" type="file" onChange={handleFileChange}/>
+      <br/>
+      <span id="imageName"></span>
+    </label>
+}
   <button onClick={handleUpload} className="upload-button">
-    Upload File
+    {upload}
   </button>
 </div>
   );

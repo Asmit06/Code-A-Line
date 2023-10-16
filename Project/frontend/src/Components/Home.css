@@ -169,4 +169,9 @@
   .upload-button:hover {
     background-color: #008d00;
   }
-  
+  input[type="file"]{
+    display:none;
+  }
+  label{
+    cursor:pointer;
+  }
